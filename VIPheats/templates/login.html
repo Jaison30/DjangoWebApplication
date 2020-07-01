@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>VIPHeater</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->  
+  <link rel="icon" type="image/png" href="{% static '/images/icons/favicon.ico' %}"/>
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="{% static '/css/bootstrap.css' %}">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="{% static '/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="{% static '/fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
+<!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="{% static '/css/util.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static '/css/login.css' %}">
+  <link href="{% static 'css/custom.css' %}?rand={{rand}}" rel="stylesheet">
+<!--===============================================================================================-->
+</head>
+<body style="background-color: #666666;">
+  
+  <div class="limiter">
+    <div class="container-login100">
+      <div class="wrap-login100">
+        <form class="login100-form validate-form" action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+          <span class="login100-form-title p-b-43">
+            Login to continue
+          </span>
+          
+          
+          <div class="wrap-input100 validate-input" data-validate = "Valid username is required">
+            <input class="input100" type="text" name="username">
+            <span class="focus-input100"></span>
+            <span class="label-input100">Username</span>
+          </div>
+          
+          
+          <div class="wrap-input100 validate-input" data-validate="Password is required">
+            <input class="input100" type="password" name="password">
+            <span class="focus-input100"></span>
+            <span class="label-input100">Password</span>
+          </div>
+
+        
+      
+
+          <div class="container-login100-form-btn">
+            <button class="btn btn-primary btn-lg btn-block">
+              Login
+            </button>
+          </div>
+          <div class="text-center p-t-46 p-b-20">
+            <a href="{% url 'SignUpUser' %}" class="nav-link" style="line-height: 21px;font-size: 18px;">
+               or sign up
+            </a>
+          </div>
+
+          <div class="text-center p-t-46 p-b-20">
+            <span class="txt2" style="color: #c80000;
+    /* font-family: arial; */
+    line-height: 21px;
+    font-size: 20px;">
+            
+              {{message}}
+              
+            </span>
+          </div>
+          
+        
+
+        </form>
+
+        <div class="login100-more" style="background-image: url('/static/images/slide2.jpg');">
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+
+  
+  
+<!--===============================================================================================-->
+  <script src="{% static '/js/jquery-3.2.1.min.js' %}"></script>
+<!--===============================================================================================-->
+
+<!--===============================================================================================-->
+  <script src="{% static '/js/popper.js' %}"></script>
+  <script src="{% static '/js/bootstrap.min.js' %}"></script>
+<!--===============================================================================================-->
+
+<!--===============================================================================================-->
+
+<!--===============================================================================================-->
+
+<!--===============================================================================================-->
+  <script src="{% static '/js/main.js' %}"></script>
+
+</body>
+</html>

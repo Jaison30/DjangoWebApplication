@@ -1,0 +1,104 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.shortcuts import render
+
+from django.http import HttpResponse,HttpResponseRedirect
+
+from django.views.generic import View
+
+from django.contrib.auth.models import User
+
+from django.contrib.auth import logout, authenticate, login
+
+from .models import Theme
+
+# Create your views here.
+
+
+class Home(View):
+	"""
+	Redirect to /vip-heats/home.
+    	"""
+	def get(self,request):
+		return HttpResponseRedirect('/vip-heats/home')
+
+class SignUpUser(View):
+	def get(self,request):
+		return render(request,'signup.html')
+	def post(self,request):
+		username = request.POST.get('username')
+		email = request.POST.get('email')
+		password = request.POST.get('password')
+		confirmpassword = request.POST.get('confirmpassword')
+		if password == confirmpassword:
+			user = User.objects.create_user(username=username,email=email, password=password)
+			user = authenticate(username=username, password=password)
+			if user is not None:
+				if user.is_active:
+					login(request, user)
+					return HttpResponseRedirect('/vip-heats/home')
+			else:
+			# An inactive account was used - no logging in!
+				return HttpResponse("Your  account is disabled.")
+		else:
+			return render(request,'signup.html',{'message':'password and confirm password does not match'})
+		return render(request,'signup.html')
+
+
+class LoginUser(View):
+	def get(self,request):
+		return render(request, 'login.html')
+	def post(self,request):
+		username = request.POST.get('username')
+		password = request.POST.get('password')
+		user = authenticate(username=username, password=password)
+		if user is not None:
+			if user.is_active:
+				login(request, user)
+				if request.user.is_superuser:
+					return HttpResponseRedirect('/materials')
+				else:
+					return HttpResponseRedirect('/vip-heats/home')
+		else:
+			return render(request, 'login.html',{'message':'Invalid credentials'})
+
+
+class LogOut(View):
+	def get(self,request):
+		logout(request)
+		return HttpResponseRedirect('/login') 
+
+
+class ChangeTheme(View):
+	"""
+    	The base view to change theme of the page.
+    	"""
+	def get(self,request):
+		"""
+        	Adding default css to the context
+        	"""
+		if request.user.is_authenticated:
+			themes = Theme.objects.filter(id=1)
+			context = {}
+			for theme in themes:
+				context['header_font_color'] = theme.header_font_color
+				context['headerbackground_color'] = theme.header_color
+				context['footerbackground_color'] = theme.footer_color
+			return render(request,'theme_change.html',context)
+		else:
+			return render(request,'login.html')
+	def post(self,request):
+		header_background_color = request.POST.get('header_background_color')
+		footer_background_color = request.POST.get('footer_background_color')
+		header_font_color = request.POST.get('header_font_color')
+
+		theme = Theme.objects.get(id=1)
+
+		theme.header_color = header_background_color
+		theme.footer_color = footer_background_color
+		theme.header_font_color = header_font_color
+
+		theme.save()
+
+		return HttpResponseRedirect('/materials')

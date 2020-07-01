@@ -1,0 +1,10 @@
+				<div class="grid_4" style="    margin-top: 12px;">
+					<div class="banner">
+						<img src="/{{material.image}}" alt="">
+						<div class="label">
+							<div class="title" >{{material.name}}</div>
+							<div class="price">FROM<span>$ {{material.price}}</span></div>
+							<a href="#">DETAILS</a>
+						</div>
+					</div>
+				</div>

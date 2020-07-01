@@ -1,0 +1,110 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.shortcuts import render
+
+from django.http import HttpResponse,HttpResponseRedirect
+
+from django.views.generic import View
+
+from django.contrib.auth import logout, authenticate, login
+
+from app.models import *
+
+from .models import *
+
+# Create your views here.
+
+
+class Home(View):
+	def get(self,request):
+	"""
+    	The base view for admin that can list all materials categories.
+
+    	"""
+		themes = Theme.objects.filter(id=1)
+		materials = Materials.objects.all()
+		context = {}
+		"""
+        	Adding default css to the context
+        	"""
+		for theme in themes:
+			context['header_font_color'] = theme.header_font_color
+			context['headerbackground_color'] = theme.header_color
+			context['footerbackground_color'] = theme.footer_color
+
+			context['urls'] = []
+			context['materials'] = materials
+
+		"""
+
+    		Add urls to the page header
+    	
+    		"""
+			
+			context['urls'].append({'url_name':'Logout','url':'logout'})
+			context['urls'].append({'url_name':'Theme','url':'change-theme'})
+
+
+		return render(request,'home.html',context)
+
+
+
+class MaterialsList(View):
+	"""
+    	The base view for admin that can list all materials by categories.
+
+    	"""
+	def get(self,request,category):
+		themes = Theme.objects.filter(id=1)
+		materials = Materials.objects.filter(category__name=category)
+		context = {}
+		"""
+        	Adding default css to the context
+        	"""
+		for theme in themes:
+			context['header_font_color'] = theme.header_font_color
+			context['headerbackground_color'] = theme.header_color
+			context['footerbackground_color'] = theme.footer_color
+
+			context['urls'] = []
+			context['materials'] = materials
+			
+			context['urls'].append({'url_name':'Logout','url':'logout'})
+			if request.user.is_superuser:
+				context['urls'].append({'url_name':'Add','url':'materials/add'})
+				context['urls'].append({'url_name':'Theme','url':'change-theme'})
+
+		return render(request,'materiallist.html',context)
+
+class MaterialsAdd(View):
+    """    
+    The view for admin to add materials.
+
+    """
+	def get(self,request):
+		if request.user.is_authenticated:
+			return render(request,'materials_add.html')
+		else:
+			return render(request,'login.html')
+
+		
+	def post(self,request):
+		name_of_material = request.POST.get('name_of_material')
+		category = request.POST.get('category')
+		price = request.POST.get('Price')
+		description = request.POST.get('description')
+		image = request.FILES.get('files')
+
+		materials = Materials()
+
+		materials.name = name_of_material
+		materials.category=Category.objects.get(name=category)
+		materials.price = price
+		materials.description = description
+		materials.image = image
+
+		materials.save()
+		return HttpResponseRedirect('/materials')
+
+

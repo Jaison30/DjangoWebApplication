@@ -1,0 +1,86 @@
+{% extends 'layout.html' %}
+{% load static %}
+ {% block css %}
+  <link href="{% static 'css/style.css' %}?rand={{rand}}" rel="stylesheet">
+ {% endblock %}
+{% block content %}
+<div class="slider_wrapper">
+			<div id="camera_wrap" class="">
+				<div data-src="{% static 'images/PE_D_C4_2178.jpg' %}">
+					<div class="caption fadeIn">
+						<h2>MEN</h2>
+			
+					</div>
+				</div>
+				<div data-src="{% static 'images/2-40-2946.jpg' %}">
+					<div class="caption fadeIn">
+						<h2>Women</h2>
+					
+					</div>
+				</div>
+				<div data-src="{% static 'images/2-40-2948.jpg' %}">
+					<div class="caption fadeIn">
+						<h2 style="color: {{theme.header_font_color}}">KIDS</h2>
+					
+					</div>
+				</div>
+			</div>
+		</div>
+<div class="content">
+<div class="container_12">
+	<div class="grid_4">
+					<div class="banner">
+						<img src="/static/images/181167-487455-large.jpg" alt="">
+						<div class="label">
+							<div class="title">MEN</div>
+							<a href="{% url 'materials-list' category='Men' %}">VIEW ALL</a>
+						</div>
+					</div>
+				</div>
+				<div class="grid_4">
+					<div class="banner">
+						<img src="/static/images/54-37-6417.jpg" alt="">
+						<div class="label">
+							<div class="title">WOMEN</div>
+							<a href="{% url 'materials-list' category='Women' %}">VIEW ALL</a>
+						</div>
+					</div>
+				</div>
+				<div class="grid_4">
+					<div class="banner">
+						<img src="/static/images/75-37-6467.jpg" alt="">
+						<div class="label">
+							<div class="title">KIDS</div>
+							<a href="{% url 'materials-list' category='Kids' %}">VIEW ALL</a>
+						</div>
+					</div>
+				</div>
+
+</div>
+</div>
+		{% endblock content %}
+
+
+{% block script %}
+ <script type="text/javascript">
+         $(document).ready(function(){
+         
+          jQuery('#camera_wrap').camera({
+        loader: false,
+        pagination: false ,
+        minHeight: '444',
+        thumbnails: false,
+        height: '48.375%',
+        caption: true,
+        navigation: true,
+        fx: 'mosaic'
+      });
+    
+      $().UItoTop({ easingType: 'easeOutQuart' });
+         
+         })
+         
+         
+      </script>
+
+      {% endblock %}
