@@ -34,7 +34,9 @@ class Index(RedirectView):
 
 class SignUpUser(View):
 	def get(self, request):
-		return render(request, 'signup.html')
+		ctx = {}
+		ctx['rand'] = randint(100, 999)
+		return render(request, 'signup.html', ctx)
 	def post(self, request):
 		username = request.POST.get('username')
 		email = request.POST.get('email')
@@ -57,7 +59,9 @@ class SignUpUser(View):
 
 class LoginUser(View):
 	def get(self, request):
-		return render(request, 'login.html')
+		ctx = {}
+		ctx['rand'] = randint(100, 999)
+		return render(request, 'login.html', ctx)
 	def post(self,request):
 		username = request.POST.get('username')
 		password = request.POST.get('password')
